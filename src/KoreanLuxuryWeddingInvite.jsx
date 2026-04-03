@@ -1,6 +1,7 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, CalendarDays, MapPin, Clock3, Mail, ChevronDown, Volume2, VolumeX } from "lucide-react";
+import romanticPiano from "@assets/Romantic-Piano.mp3";
 
 const localGalleryModules = import.meta.glob("@assets/IMG/*.{jpg,jpeg,png,webp,avif}", {
   eager: true,
@@ -22,6 +23,7 @@ const WEDDING = {
   address: "242新北市新莊區思源路40號",
   mapsUrl: "https://maps.app.goo.gl/ikkRye8mTHwbputQ6",
   rsvpUrl: "https://forms.gle/your-form-link",
+  shareUrl: "https://iotya.github.io/wedding-invite",
   heroImage:
     "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80",
   story1:
@@ -67,8 +69,10 @@ function InfoCard({ icon: Icon, label, value }) {
 
 export default function KoreanLuxuryWeddingInvite() {
   const [opened, setOpened] = useState(false);
-  const [muted, setMuted] = useState(true);
+  const [muted, setMuted] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [remaining, setRemaining] = useState(() => formatRemaining(new Date(WEDDING.date)));
+  const bgmRef = useRef(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -76,6 +80,68 @@ export default function KoreanLuxuryWeddingInvite() {
     }, 60000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const audio = bgmRef.current;
+    if (!audio) return;
+
+    audio.muted = muted;
+    if (!opened) {
+      return;
+    }
+
+    if (!muted) {
+      const playPromise = audio.play();
+      if (playPromise?.catch) {
+        playPromise.catch(() => {});
+      }
+    } else {
+      audio.pause();
+    }
+  }, [muted, opened]);
+
+  const handleToggleMute = () => {
+    const nextMuted = !muted;
+    setMuted(nextMuted);
+
+    const audio = bgmRef.current;
+    if (!audio || !opened) return;
+
+    audio.muted = nextMuted;
+    if (nextMuted) {
+      audio.pause();
+      return;
+    }
+
+    const playPromise = audio.play();
+    if (playPromise?.catch) {
+      playPromise.catch(() => {});
+    }
+  };
+
+  const handleCopyInvite = async () => {
+    const shareLink = WEDDING.shareUrl;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareLink);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = shareLink;
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // optional fallback if copy fails, ignore to avoid UI interruption
+    }
+  };
 
   const names = useMemo(() => `${WEDDING.groom}  &  ${WEDDING.bride}`, []);
 
@@ -126,7 +192,16 @@ export default function KoreanLuxuryWeddingInvite() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.9 }}
-                onClick={() => setOpened(true)}
+                onClick={() => {
+                  setOpened(true);
+                  const audio = bgmRef.current;
+                  if (audio && !muted) {
+                    const playPromise = audio.play();
+                    if (playPromise?.catch) {
+                      playPromise.catch(() => {});
+                    }
+                  }
+                }}
                 className="mt-12 rounded-full border border-white/70 bg-white/10 px-8 py-3 text-sm tracking-[0.28em] text-white backdrop-blur transition hover:bg-white/20"
               >
                 OPEN INVITATION
@@ -143,12 +218,20 @@ export default function KoreanLuxuryWeddingInvite() {
         </div>
 
         <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 pb-16 pt-8 md:px-10">
+          <audio
+            ref={bgmRef}
+            src={romanticPiano}
+            loop
+            preload="auto"
+            muted={muted}
+            playsInline
+          />
           <div className="flex items-center justify-between">
             <div className="rounded-full border border-white/35 bg-white/10 px-4 py-2 text-xs tracking-[0.35em] text-white backdrop-blur">
               INVITATION
             </div>
             <button
-              onClick={() => setMuted((v) => !v)}
+              onClick={handleToggleMute}
               className="rounded-full border border-white/30 bg-white/10 p-3 text-white backdrop-blur"
               aria-label="toggle music"
               title="可替換成背景音樂控制"
@@ -266,12 +349,13 @@ export default function KoreanLuxuryWeddingInvite() {
               >
                 立即回覆出席
               </a>
-              <a
-                href={`mailto:?subject=${encodeURIComponent("婚禮邀請")}&body=${encodeURIComponent("歡迎參加我們的婚禮：" + window.location.href)}`}
+              <button
+                onClick={handleCopyInvite}
                 className="rounded-full border border-stone-300 bg-white px-8 py-4 text-sm tracking-[0.24em] text-stone-800 transition hover:-translate-y-0.5"
+                type="button"
               >
-                分享喜帖
-              </a>
+                {copied ? "已複製連結" : "複製分享連結"}
+              </button>
             </div>
 
             <div className="mt-10 text-sm leading-8 text-stone-500">
