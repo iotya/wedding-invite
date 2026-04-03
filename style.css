@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  font-family: "Noto Serif TC", serif;
+  text-align: center;
+  background: #fdfaf6;
+}
+
+#cover {
+  height: 100vh;
+  background: url('assets/001-179.webp') center/cover;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section {
+  padding: 40px;
+}
+
+img {
+  width: 80%;
+  border-radius: 12px;
+}
