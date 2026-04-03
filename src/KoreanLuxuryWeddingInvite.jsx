@@ -4,7 +4,8 @@ import { Heart, CalendarDays, MapPin, Clock3, Mail, ChevronDown, Volume2, Volume
 
 const localGalleryModules = import.meta.glob("@assets/IMG/*.{jpg,jpeg,png,webp,avif}", {
   eager: true,
-  as: "url",
+  query: "?url",
+  import: "default",
 });
 
 const galleryImages = Object.keys(localGalleryModules)
