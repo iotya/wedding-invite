@@ -22,7 +22,7 @@ const WEDDING = {
   venue: "晶宴會館 峇里斯莊園(新莊館)",
   address: "242新北市新莊區思源路40號",
   mapsUrl: "https://maps.app.goo.gl/ikkRye8mTHwbputQ6",
-  rsvpUrl: "https://forms.gle/your-form-link",
+  rsvpUrl: "https://docs.google.com/forms/d/1AqViFn5_ZRE0FdDQkILRo5m8C3pxuxQpMh4234PppWU",
   shareUrl: "https://iotya.github.io/wedding-invite",
   heroImage:
     "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80",
