@@ -67,6 +67,34 @@ function InfoCard({ icon: Icon, label, value }) {
   );
 }
 
+function VenueCard({ label, venue, address, mapsUrl }) {
+  return (
+    <div className="rounded-3xl border border-white/60 bg-white/70 p-6 shadow-[0_10px_40px_rgba(0,0,0,0.06)] backdrop-blur">
+      <div className="mb-4 flex justify-center">
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="查看地圖"
+          className="rounded-full border border-stone-200 p-3 text-stone-600 transition hover:bg-stone-100"
+        >
+          <MapPin className="h-5 w-5" />
+        </a>
+      </div>
+      <p className="text-xs uppercase tracking-[0.3em] text-stone-400">{label}</p>
+      <p className="mt-3 text-base leading-7 text-stone-700">{venue}</p>
+      <a
+        href={mapsUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-2 block text-base leading-7 text-stone-700 underline decoration-stone-400 underline-offset-2 hover:text-stone-900"
+      >
+        {address}
+      </a>
+    </div>
+  );
+}
+
 export default function KoreanLuxuryWeddingInvite() {
   const [opened, setOpened] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -254,6 +282,14 @@ export default function KoreanLuxuryWeddingInvite() {
               <p className="mt-8 text-sm leading-8 text-white/85 md:text-lg">{WEDDING.story2}</p>
               <p className="mt-8 text-sm leading-8 text-white/85 md:text-lg">{WEDDING.story3}</p>
               <p className="mt-8 text-sm tracking-[0.3em] text-white/90 md:text-base">{WEDDING.dateDisplay}</p>
+              <a
+                href={WEDDING.rsvpUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mx-auto mt-8 inline-block rounded-full border border-white/30 bg-white/70 px-8 py-4 text-sm tracking-[0.24em] text-stone-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-white/85"
+              >
+                回覆出席
+              </a>
             </motion.div>
           </div>
 
@@ -270,27 +306,9 @@ export default function KoreanLuxuryWeddingInvite() {
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             <InfoCard icon={CalendarDays} label="Date" value={WEDDING.dateDisplay} />
             <InfoCard icon={Clock3} label="Time" value={WEDDING.timeDisplay} />
-            <InfoCard icon={MapPin} label="Venue" value={`${WEDDING.venue}\n${WEDDING.address}`} />
+            <VenueCard label="Venue" venue={WEDDING.venue} address={WEDDING.address} mapsUrl={WEDDING.mapsUrl} />
           </div>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row">
-            <a
-              href={WEDDING.mapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full bg-stone-900 px-8 py-4 text-sm tracking-[0.24em] text-white transition hover:-translate-y-0.5"
-            >
-              查看地圖
-            </a>
-            <a
-              href={WEDDING.rsvpUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-stone-300 bg-white px-8 py-4 text-sm tracking-[0.24em] text-stone-800 transition hover:-translate-y-0.5"
-            >
-              回覆出席
-            </a>
-          </div>
         </section>
 
         <section className="px-6 py-10 md:px-10">
