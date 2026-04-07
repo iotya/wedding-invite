@@ -232,7 +232,7 @@ export default function KoreanLuxuryWeddingInvite() {
                 }}
                 className="mt-12 rounded-full border border-white/70 bg-white/10 px-8 py-3 text-sm tracking-[0.28em] text-white backdrop-blur transition hover:bg-white/20"
               >
-                OPEN INVITATION
+                (點擊 👉) 誠心邀請 
               </motion.button>
             </div>
           </motion.div>
