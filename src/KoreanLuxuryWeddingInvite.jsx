@@ -286,7 +286,7 @@ export default function KoreanLuxuryWeddingInvite() {
                 href={WEDDING.rsvpUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="mx-auto mt-8 inline-block rounded-full border border-white/30 bg-white/70 px-8 py-4 text-sm tracking-[0.24em] text-stone-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-white/85"
+                className="mx-auto mt-8 hidden rounded-full border border-white/30 bg-white/70 px-8 py-4 text-sm tracking-[0.24em] text-stone-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-white/85"
               >
                 回覆出席
               </a>
@@ -363,7 +363,7 @@ export default function KoreanLuxuryWeddingInvite() {
                 href={WEDDING.rsvpUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full bg-stone-900 px-8 py-4 text-sm tracking-[0.24em] text-white transition hover:-translate-y-0.5"
+                className="hidden rounded-full bg-stone-900 px-8 py-4 text-sm tracking-[0.24em] text-white transition hover:-translate-y-0.5"
               >
                 立即回覆出席
               </a>
